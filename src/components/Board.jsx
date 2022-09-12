@@ -1,9 +1,11 @@
-import {useState} from 'react'
+import {useState, useEffect} from 'react'
 
 function Board() {
     const [squares, setSquares] = useState(Array(9).fill(null));
     const [isX, setIsX] = useState(true);
     const [winnerPlayer, setWinnerPlayer] = useState("");
+    const [xScore, setXScore] = useState(0);
+    const [oScore, setOScore] = useState(0);
     const player = isX ? "X" : "O";
   
     const checkWinner = () => {
@@ -25,6 +27,12 @@ function Board() {
         return true;
       }
     };
+  
+    useEffect(() => {
+      if (winnerPlayer) {
+        isX ? setXScore( x => x + 1) : setOScore(o => o + 1);
+      }
+    }, [winnerPlayer, isX]);
   
     const handleClick = (i) => {
       if (winnerPlayer || squares[i]) {
@@ -62,6 +70,10 @@ function Board() {
         <button className="reset" onClick={handleReset}>
           Restart
         </button>
+        <div className="scores">
+          <span>X:{xScore}</span>
+          <span>O:{oScore}</span>
+        </div>
       </div>
     );
   }
